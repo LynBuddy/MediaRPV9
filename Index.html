@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Publik Virtual - Informatika Kelas 9</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        digitalBlue: '#2563EB',
+                        warmOrange: '#F97316',
+                        pastelBg: '#F8FAFC',
+                        pastelCard: '#FFFFFF',
+                        pastelAccent: '#E0F2FE'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-pastelBg text-slate-800 min-h-screen flex flex-col">
+
+    <!-- ========================================== -->
+    <!-- 1. HALAMAN ONBOARDING & PRESENSI -->
+    <!-- ========================================== -->
+    <div id="onboardingScreen" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 sm:p-8 border-4 border-digitalBlue/20 transform transition-all">
+            <div class="text-center mb-6">
+                <span class="bg-digitalBlue/10 text-digitalBlue text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Informatika Kelas 9</span>
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-2">Ruang Publik Virtual 🌐</h1>
+                <p class="text-sm text-slate-600 mt-1">Silakan lengkapi identitas dan presensi sebelum memulai petualangan belajar!</p>
+            </div>
+
+            <form id="onboardingForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                    <input type="text" id="inputNama" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Kelas <span class="text-red-500">*</span></label>
+                        <input type="text" id="inputKelas" required placeholder="Contoh: 9A" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Kelompok <span class="text-red-500">*</span></label>
+                        <input type="text" id="inputKelompok" required placeholder="Contoh: Kelompok 1" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Status Kehadiran <span class="text-red-500">*</span></label>
+                    <select id="inputPresensi" required class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition bg-white">
+                        <option value="">-- Pilih Status --</option>
+                        <option value="Hadir">Hadir</option>
+                        <option value="Izin">Izin</option>
+                        <option value="Sakit">Sakit</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Suasana Hati (Mood) <span class="text-red-500">*</span></label>
+                    <div class="grid grid-cols-4 gap-2 text-center">
+                        <label class="cursor-pointer border border-slate-200 rounded-xl p-2 hover:bg-pastelAccent transition flex flex-col items-center">
+                            <input type="radio" name="mood" value="😊 Semangat" required class="sr-only peer">
+                            <span class="text-2xl peer-checked:scale-125 transition">😊</span>
+                            <span class="text-[10px] mt-1 text-slate-600">Semangat</span>
+                        </label>
+                        <label class="cursor-pointer border border-slate-200 rounded-xl p-2 hover:bg-pastelAccent transition flex flex-col items-center">
+                            <input type="radio" name="mood" value="😎 Siap" class="sr-only peer">
+                            <span class="text-2xl peer-checked:scale-125 transition">😎</span>
+                            <span class="text-[10px] mt-1 text-slate-600">Siap</span>
+                        </label>
+                        <label class="cursor-pointer border border-slate-200 rounded-xl p-2 hover:bg-pastelAccent transition flex flex-col items-center">
+                            <input type="radio" name="mood" value="🤔 Penasaran" class="sr-only peer">
+                            <span class="text-2xl peer-checked:scale-125 transition">🤔</span>
+                            <span class="text-[10px] mt-1 text-slate-600">Penasaran</span>
+                        </label>
+                        <label class="cursor-pointer border border-slate-200 rounded-xl p-2 hover:bg-pastelAccent transition flex flex-col items-center">
+                            <input type="radio" name="mood" value="😴 Mengantuk" class="sr-only peer">
+                            <span class="text-2xl peer-checked:scale-125 transition">😴</span>
+                            <span class="text-[10px] mt-1 text-slate-600">Mengantuk</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Pertanyaan Pemantik</label>
+                    <p class="text-xs text-slate-500 mb-1">Menurutmu, apa bedanya ngobrol di kantin sekolah dengan mengomentari postingan TikTok?</p>
+                    <textarea id="inputPemantik" rows="2" placeholder="Tuliskan jawaban singkatmu di sini..." class="w-full px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-warmOrange hover:bg-orange-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition transform active:scale-95">
+                    🚀 Mulai Belajar Sekarang
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 2. NAVIGATION BAR -->
+    <!-- ========================================== -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-digitalBlue text-white p-2 rounded-xl font-bold text-lg shadow-md shadow-digitalBlue/30">🌐</div>
+                <div>
+                    <h2 class="text-sm font-bold text-slate-900 leading-tight">Ruang Publik Virtual</h2>
+                    <p class="text-[11px] text-slate-500">Informatika Kelas 9 SMP</p>
+                </div>
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-1">
+                <button onclick="switchTab('dashboard')" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition active-tab" data-target="dashboard">Dashboard</button>
+                <button onclick="switchTab('materials')" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" data-target="materials">Bahan Ajar</button>
+                <button onclick="switchTab('lkpd')" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" data-target="lkpd">LKPD Online</button>
+                <button onclick="switchTab('assignment')" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" data-target="assignment">Pengumpulan Tugas</button>
+                <button onclick="switchTab('reflection')" class="nav-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition" data-target="reflection">Refleksi Akhir</button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button id="audioToggle" onclick="toggleAudio()" title="Mute/Unmute Audio" class="bg-slate-100 hover:bg-slate-200 p-2.5 rounded-xl text-xs font-medium text-slate-700 transition">
+                    🔊 <span class="hidden sm:inline">SFX: On</span>
+                </button>
+                <button onclick="openAdminModal()" class="bg-slate-100 hover:bg-slate-200 px-3 py-2.5 rounded-xl text-xs font-medium text-slate-700 transition">
+                    🔒 Admin
+                </button>
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl bg-slate-100 text-slate-700">
+                    ☰
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-1">
+            <button onclick="switchTab('dashboard'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100">Dashboard</button>
+            <button onclick="switchTab('materials'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100">Bahan Ajar</button>
+            <button onclick="switchTab('lkpd'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100">LKPD Online</button>
+            <button onclick="switchTab('assignment'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100">Pengumpulan Tugas</button>
+            <button onclick="switchTab('reflection'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100">Refleksi Akhir</button>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 3. MAIN CONTAINER & VIEWS -->
+    <!-- ========================================== -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- VIEW A: DASHBOARD UTAMA -->
+        <section id="view-dashboard" class="tab-view space-y-6">
+            <!-- Sapaan Personal Banner -->
+            <div class="bg-gradient-to-r from-digitalBlue to-blue-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row justify-between items-center relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">🌐</div>
+                <div class="z-10 mb-4 md:mb-0">
+                    <span class="bg-white/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Selamat Datang 👋</span>
+                    <h2 id="greetingName" class="text-2xl sm:text-4xl font-bold mt-2">Halo, Siswa!</h2>
+                    <p id="greetingDetails" class="text-blue-100 text-sm mt-1">Kelas: - | Kelompok: - | Presensi: -</p>
+                </div>
+                <div class="z-10 bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 text-center">
+                    <p class="text-xs text-blue-200">Status Belajar</p>
+                    <p id="overallStatusText" class="text-lg font-bold mt-0.5">Sedang Berproses</p>
+                </div>
+            </div>
+
+            <!-- Profil Guru & Identitas Materi -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <div class="flex items-center space-x-3 mb-3">
+                        <div class="bg-orange-100 text-warmOrange p-3 rounded-xl font-bold">👩‍🏫</div>
+                        <div>
+                            <h4 class="text-xs font-semibold text-slate-400 uppercase">Guru Pengampu</h4>
+                            <p class="text-sm font-bold text-slate-800">Tim Guru Informatika SMP</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">Siap mendampingi eksplorasi etika dan keamanan berinteraksi di ruang publik digital.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 md:col-span-2">
+                    <h4 class="text-xs font-semibold text-slate-400 uppercase mb-2">Ringkasan Topik Pembelajaran</h4>
+                    <p class="text-xs text-slate-700 leading-relaxed">
+                        Ruang publik virtual adalah area di dunia maya tempat masyarakat berinteraksi, berdiskusi, berbagi informasi, dan beraktivitas secara sosial. Melalui bab ini, <span class="nama-siswa-dynamic font-semibold text-digitalBlue">Siswa</span> akan mempelajari berbagai jenis ruang publik digital, etika berkomunikasi, serta prinsip keamanan digital <b>"3S" (Saring Sebelum Share)</b>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Progress Bar (Tujuan Pembelajaran) -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Tujuan Pembelajaran (TP)</h3>
+                        <p class="text-xs text-slate-500">Progress kamu akan tercentang otomatis setelah LKPD selesai dan minimal salah satu bahan ajar diselesaikan.</p>
+                    </div>
+                    <div class="mt-3 sm:mt-0 bg-slate-100 px-4 py-2 rounded-xl text-xs font-semibold text-slate-700">
+                        Progress: <span id="progressCount">0</span>/2 Selesai
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- TP 1: Bahan Ajar -->
+                    <div id="tp1Box" class="flex items-start p-4 rounded-2xl border border-slate-200 bg-slate-50 transition">
+                        <div id="tp1Icon" class="bg-slate-200 text-slate-500 rounded-xl w-8 h-8 flex items-center justify-center font-bold text-sm mr-4 mt-0.5 flex-shrink-0">⏳</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800">1. Memahami Konsep & Pilihan Media Bahan Ajar</h4>
+                            <p class="text-xs text-slate-600 mt-0.5">Menyelesaikan minimal salah satu pilihan bahan ajar (Slide Presentasi, Modul Teks, atau Peta Kota Digital).</p>
+                        </div>
+                    </div>
+
+                    <!-- TP 2: LKPD Online -->
+                    <div id="tp2Box" class="flex items-start p-4 rounded-2xl border border-slate-200 bg-slate-50 transition">
+                        <div id="tp2Icon" class="bg-slate-200 text-slate-500 rounded-xl w-8 h-8 flex items-center justify-center font-bold text-sm mr-4 mt-0.5 flex-shrink-0">⏳</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800">2. Menyelesaikan LKPD & Studi Kasus</h4>
+                            <p class="text-xs text-slate-600 mt-0.5">Mengisi seluruh klue berjenjang dan menarik kesimpulan kelompok pada menu LKPD Online.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW B: MENU BAHAN PEMBELAJARAN (3 PILIHAN) -->
+        <section id="view-materials" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 text-center max-w-3xl mx-auto">
+                <span class="bg-warmOrange/10 text-warmOrange text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Fleksibel & Interaktif</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Pilih Jalur Belajar Favoritmu</h2>
+                <p class="text-xs text-slate-600 mt-1">Kamu bebas memilih salah satu atau ketiga media bahan ajar di bawah ini sesuai kenyamanan belajarmu.</p>
+            </div>
+
+            <!-- 3 Pilihan Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Pilihan 1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:border-digitalBlue transition">
+                    <div>
+                        <div class="bg-blue-50 text-digitalBlue p-3 rounded-2xl w-12 h-12 flex items-center justify-center font-bold text-xl mb-4">📊</div>
+                        <h3 class="text-base font-bold text-slate-900">Pilihan 1: Slide Presentasi</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Presentasi visual interaktif lengkap dengan materi ringkas mengenai Ruang Publik Virtual.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openMaterialModal('slide')" class="bg-digitalBlue hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition">Buka Slide</button>
+                        <span id="badgeMaterialSlide" class="text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">Belum Selesai</span>
+                    </div>
+                </div>
+
+                <!-- Pilihan 2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:border-digitalBlue transition">
+                    <div>
+                        <div class="bg-orange-50 text-warmOrange p-3 rounded-2xl w-12 h-12 flex items-center justify-center font-bold text-xl mb-4">📖</div>
+                        <h3 class="text-base font-bold text-slate-900">Pilihan 2: Modul Teks</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Dokumen modul bacaan mendalam yang dapat dibaca langsung dan diunduh untuk belajar mandiri.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openMaterialModal('modul')" class="bg-warmOrange hover:bg-orange-600 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition">Buka Modul</button>
+                        <span id="badgeMaterialModul" class="text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">Belum Selesai</span>
+                    </div>
+                </div>
+
+                <!-- Pilihan 3 (Peta Kota Digital) -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between hover:border-digitalBlue transition">
+                    <div>
+                        <div class="bg-purple-50 text-purple-600 p-3 rounded-2xl w-12 h-12 flex items-center justify-center font-bold text-xl mb-4">🗺️</div>
+                        <h3 class="text-base font-bold text-slate-900">Pilihan 3: Peta Kota Digital</h3>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">Eksplorasi 8 titik lokasi ruang publik virtual interaktif dengan sistem gulungan kertas.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <button onclick="openMapModal()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition">Buka Peta Kota</button>
+                        <span id="badgeMaterialMap" class="text-[10px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-medium">Belum Selesai</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW C: MENU LKPD ONLINE -->
+        <section id="view-lkpd" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-4xl mx-auto">
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <span class="bg-digitalBlue/10 text-digitalBlue text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Lembar Kerja Peserta Didik</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-2">LKPD Interaktif: Analisis Studi Kasus</h2>
+                    <p class="text-xs text-slate-600 mt-1">Selesaikan studi kasus kelompokmu dengan mengisi klue berjenjang secara berurutan.</p>
+                </div>
+
+                <!-- Petunjuk & Anggota Kelompok -->
+                <div class="space-y-4 mb-8">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nama Anggota Kelompok <span class="text-red-500">*</span></label>
+                        <input type="text" id="lkpdAnggota" placeholder="Contoh: Budi, Ani, Joko, Siti" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue focus:border-digitalBlue outline-none text-sm transition">
+                    </div>
+
+                    <!-- Pemilihan Studi Kasus -->
+                    <div id="caseSelectionBox" class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="text-sm font-bold text-slate-900 mb-2">Pilih Studi Kasus Kelompok (Terkunci Permanen Setelah Dipilih)</h4>
+                        <p class="text-xs text-slate-500 mb-4">Jawab riddle pengunci di bawah untuk membuka studi kasus.</p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Kasus 1 -->
+                            <div class="border border-slate-200 bg-white p-4 rounded-2xl flex flex-col justify-between">
+                                <div>
+                                    <span class="text-[10px] bg-blue-100 text-digitalBlue px-2.5 py-1 rounded-full font-semibold">Studi Kasus 1</span>
+                                    <h5 class="text-sm font-bold text-slate-800 mt-2">Penyebaran Berita Hoaks di Grup WhatsApp Warga</h5>
+                                    <p class="text-xs text-slate-600 mt-1">Menganalisis dampak dan tindakan mitigasi atas informasi palsu yang viral di balai warga virtual.</p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-slate-100">
+                                    <div id="lockKasus1" class="space-y-2">
+                                        <p class="text-[11px] text-slate-600 font-medium">Riddle: Apa kepanjangan prinsip "3S" dalam menyaring informasi?</p>
+                                        <div class="flex space-x-2">
+                                            <input type="text" id="riddle1Ans" placeholder="Ketik jawaban..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-digitalBlue outline-none">
+                                            <button onclick="unlockCase(1)" class="bg-digitalBlue text-white text-xs px-3 py-2 rounded-lg font-semibold hover:bg-blue-700">Buka</button>
+                                        </div>
+                                    </div>
+                                    <div id="unlockedKasus1" class="hidden text-xs text-emerald-600 font-bold bg-emerald-50 p-2 rounded-lg text-center">
+                                        ✓ Studi Kasus 1 Dipilih & Terkunci Permanen
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Kasus 2 -->
+                            <div class="border border-slate-200 bg-white p-4 rounded-2xl flex flex-col justify-between">
+                                <div>
+                                    <span class="text-[10px] bg-orange-100 text-warmOrange px-2.5 py-1 rounded-full font-semibold">Studi Kasus 2</span>
+                                    <h5 class="text-sm font-bold text-slate-800 mt-2">Cyberbullying di Kolom Komentar Platform Video</h5>
+                                    <p class="text-xs text-slate-600 mt-1">Menganalisis etika berinteraksi dan dampak psikologis dari komentar negatif netizen.</p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-slate-100">
+                                    <div id="lockKasus2" class="space-y-2">
+                                        <p class="text-[11px] text-slate-600 font-medium">Riddle: Apa nama platform berbagi video terpopuler di dunia?</p>
+                                        <div class="flex space-x-2">
+                                            <input type="text" id="riddle2Ans" placeholder="Ketik jawaban..." class="w-full px-3 py-2 text-xs rounded-lg border border-slate-300 focus:ring-2 focus:ring-digitalBlue outline-none">
+                                            <button onclick="unlockCase(2)" class="bg-warmOrange text-white text-xs px-3 py-2 rounded-lg font-semibold hover:bg-orange-600">Buka</button>
+                                        </div>
+                                    </div>
+                                    <div id="unlockedKasus2" class="hidden text-xs text-emerald-600 font-bold bg-emerald-50 p-2 rounded-lg text-center">
+                                        ✓ Studi Kasus 2 Dipilih & Terkunci Permanen
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Isian Clue Berjenjang -->
+                <div id="cluesSection" class="space-y-6 opacity-50 pointer-events-none transition-all duration-300">
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs text-amber-800">
+                        ⚠️ <b>Sistem Berjenjang Strict:</b> Harap selesaikan pengisian Klue 1 terlebih dahulu agar Klue 2 terbuka, dan seterusnya secara berurutan.
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Klue 1 -->
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                            <label class="block text-xs font-semibold text-slate-800 mb-1">Klue 1: Identifikasi Masalah Utama</label>
+                            <textarea id="clue1Input" oninput="checkClueProgress(1)" rows="2" placeholder="Tuliskan temuan klue fisik pertama..." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue outline-none bg-white"></textarea>
+                        </div>
+
+                        <!-- Klue 2 -->
+                        <div id="boxClue2" class="bg-slate-100 p-4 rounded-2xl border border-slate-200 opacity-60">
+                            <label class="block text-xs font-semibold text-slate-800 mb-1">Klue 2: Analisis Penyebab (Terkunci)</label>
+                            <textarea id="clue2Input" disabled oninput="checkClueProgress(2)" rows="2" placeholder="Terkunci. Selesaikan Klue 1 terlebih dahulu." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-slate-200"></textarea>
+                        </div>
+
+                        <!-- Klue 3 -->
+                        <div id="boxClue3" class="bg-slate-100 p-4 rounded-2xl border border-slate-200 opacity-60">
+                            <label class="block text-xs font-semibold text-slate-800 mb-1">Klue 3: Dampak terhadap Pengguna (Terkunci)</label>
+                            <textarea id="clue3Input" disabled oninput="checkClueProgress(3)" rows="2" placeholder="Terkunci. Selesaikan Klue 2 terlebih dahulu." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-slate-200"></textarea>
+                        </div>
+
+                        <!-- Klue 4 -->
+                        <div id="boxClue4" class="bg-slate-100 p-4 rounded-2xl border border-slate-200 opacity-60">
+                            <label class="block text-xs font-semibold text-slate-800 mb-1">Klue 4: Solusi & Pencegahan (Terkunci)</label>
+                            <textarea id="clue4Input" disabled oninput="checkClueProgress(4)" rows="2" placeholder="Terkunci. Selesaikan Klue 3 terlebih dahulu." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none bg-slate-200"></textarea>
+                        </div>
+
+                        <!-- Penarikan Kesimpulan -->
+                        <div id="boxConclusion" class="bg-blue-50 p-4 rounded-2xl border border-blue-200 opacity-60">
+                            <label class="block text-xs font-semibold text-digitalBlue mb-1">Penarikan Kesimpulan Akhir Kelompok (Terkunci)</label>
+                            <textarea id="conclusionInput" disabled rows="3" placeholder="Terkunci. Selesaikan ke-4 klue di atas terlebih dahulu." class="w-full px-3 py-2 text-xs rounded-xl border border-blue-300 outline-none bg-slate-200"></textarea>
+                            <button onclick="saveLkpdData()" id="btnSaveLkpd" disabled class="mt-3 bg-digitalBlue text-white text-xs font-semibold px-4 py-2.5 rounded-xl opacity-50 cursor-not-allowed transition">💾 Simpan LKPD</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW D: MENU PENGUMPULAN TUGAS -->
+        <section id="view-assignment" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-2xl mx-auto">
+                <span class="bg-warmOrange/10 text-warmOrange text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Proyek Akhir</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Pengumpulan Tugas</h2>
+                <p class="text-xs text-slate-600 mt-1">Lampirkan tautan Google Drive / Canva / dokumen hasil proyek kelompokmu di sini.</p>
+
+                <form id="assignmentForm" onsubmit="submitAssignment(event)" class="space-y-4 mt-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Tautan Tugas (URL) <span class="text-red-500">*</span></label>
+                        <input type="url" id="inputTaskUrl" required placeholder="https://docs.google.com/..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue outline-none text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Catatan Tambahan (Opsional)</label>
+                        <textarea id="inputTaskNotes" rows="3" placeholder="Tuliskan catatan untuk guru..." class="w-full px-4 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-digitalBlue outline-none text-sm transition"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-digitalBlue hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg shadow-digitalBlue/30 transition">
+                        📤 Kirim Tugas
+                    </button>
+                </form>
+                <div id="assignmentStatus" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-700 text-center font-medium">
+                    ✓ Tugas berhasil dikirim dan tersimpan!
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW E: MENU REFLEKSI AKHIR -->
+        <section id="view-reflection" class="tab-view hidden space-y-6">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 max-w-2xl mx-auto">
+                <span class="bg-purple-100 text-purple-600 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Evaluasi Diri</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Refleksi Pembelajaran</h2>
+                <p class="text-xs text-slate-600 mt-1">Bagikan kesan dan tingkat pemahamanmu setelah mempelajari materi hari ini.</p>
+
+                <form id="reflectionForm" onsubmit="submitReflection(event)" class="space-y-4 mt-6">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">1. Hal baru apa yang kamu dapatkan hari ini? <span class="text-red-500">*</span></label>
+                        <textarea id="ref1" required rows="2" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-digitalBlue outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">2. Tantangan apa yang kamu alami selama mengikuti pembelajaran? <span class="text-red-500">*</span></label>
+                        <textarea id="ref2" required rows="2" class="w-full px-4 py-2 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-digitalBlue outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="text-xs font-semibold text-slate-700 uppercase">3. Seberapa paham kamu dengan materi ini? (<span id="sliderVal">80</span>%)</label>
+                        </div>
+                        <input type="range" id="refSlider" min="0" max="100" value="80" oninput="document.getElementById('sliderVal').innerText = this.value" class="w-full accent-digitalBlue cursor-pointer">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">4. Status Lanjutan <span class="text-red-500">*</span></label>
+                        <select id="refSelect" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-digitalBlue outline-none bg-white">
+                            <option value="">-- Pilih Status --</option>
+                            <option value="Siap Lanjut Materi Berikutnya">Siap lanjut ke materi berikutnya</option>
+                            <option value="Perlu Pengulangan / Pendalaman">Masih perlu pengulangan</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full bg-warmOrange hover:bg-orange-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition">
+                        🎯 Kirim Refleksi & Selesaikan Modul
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- MODALS & OVERLAYS -->
+    <!-- ========================================== -->
+
+    <!-- Modal Bahan Ajar (Slide / Modul) -->
+    <div id="materialModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-4">
+                <h3 id="matModalTitle" class="text-lg font-bold text-slate-900">Bahan Ajar</h3>
+                <button onclick="closeMaterialModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+            </div>
+            <div class="space-y-4">
+                <div class="w-full h-72 bg-slate-100 rounded-2xl flex items-center justify-center border border-slate-200 relative overflow-hidden">
+                    <div id="matModalEmbedContent" class="text-center p-6">
+                        <span class="text-4xl">📄</span>
+                        <p class="text-sm font-semibold text-slate-700 mt-2">Simulasi Embed Google Drive / Viewer</p>
+                        <p class="text-xs text-slate-500 mt-1">Materi interaktif Ruang Publik Virtual dimuat dengan lancar di sini.</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pt-2">
+                    <a id="matModalDownloadBtn" href="#" target="_blank" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold px-4 py-2.5 rounded-xl transition">📥 Unduh Materi</a>
+                    <button onclick="finishMaterialOption()" class="bg-digitalBlue hover:bg-blue-700 text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition">✓ Tandai Selesai & Mini-Kuis OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Peta Kota Digital (Pilihan 3) -->
+    <div id="mapModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 max-h-[95vh] overflow-y-auto relative">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-4">
+                <div>
+                    <span class="text-[10px] bg-purple-100 text-purple-600 px-2.5 py-1 rounded-full font-semibold">Pilihan 3</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-1">🗺️ Peta Kota Digital Ruang Publik Virtual</h3>
+                </div>
+                <button onclick="closeMapModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+            </div>
+
+            <p class="text-xs text-slate-600 mb-6">Klik titik lokasi secara berurutan (Sequential Unlocking). Tarik gulungan kertas untuk membaca materi dan menyelesaikan mini-kuis!</p>
+
+            <!-- Grid 8 Titik Peta -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <!-- Titik 1 -->
+                <div id="pin1" onclick="openScrollModal(1)" class="map-pin border-2 border-digitalBlue bg-blue-50 p-4 rounded-2xl text-center cursor-pointer hover:scale-105 transition shadow-sm">
+                    <span class="text-2xl">🏙️</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">1. Kenali Medannya</h4>
+                    <span id="statusPin1" class="text-[10px] text-digitalBlue font-semibold mt-1 block">Buka Titik</span>
+                </div>
+                <!-- Titik 2 -->
+                <div id="pin2" onclick="openScrollModal(2)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🎉</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">2. Media Sosial</h4>
+                    <span id="statusPin2" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 3 -->
+                <div id="pin3" onclick="openScrollModal(3)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🏛️</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">3. Forum Diskusi</h4>
+                    <span id="statusPin3" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 4 -->
+                <div id="pin4" onclick="openScrollModal(4)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🎬</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">4. Berbagi Video</h4>
+                    <span id="statusPin4" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 5 -->
+                <div id="pin5" onclick="openScrollModal(5)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">📚</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">5. Blog & Website</h4>
+                    <span id="statusPin5" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 6 -->
+                <div id="pin6" onclick="openScrollModal(6)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🏫</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">6. Platform Belajar</h4>
+                    <span id="statusPin6" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 7 -->
+                <div id="pin7" onclick="openScrollModal(7)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🛍️</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">7. Marketplace</h4>
+                    <span id="statusPin7" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+                <!-- Titik 8 -->
+                <div id="pin8" onclick="openScrollModal(8)" class="map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition">
+                    <span class="text-2xl">🛡️</span>
+                    <h4 class="text-xs font-bold text-slate-800 mt-2">8. Mode Survival (3S)</h4>
+                    <span id="statusPin8" class="text-[10px] text-slate-500 font-semibold mt-1 block">Terkunci</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4 border-t border-slate-200">
+                <span id="mapProgressInfo" class="text-xs text-slate-600 font-medium">Titik selesai: 0/8</span>
+                <button onclick="finishMapOption()" id="btnFinishMap" disabled class="bg-slate-300 text-slate-500 text-xs font-semibold px-6 py-2.5 rounded-xl cursor-not-allowed transition">✓ Selesaikan Peta Kota</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gulungan Kertas (Scroll Icon Content) -->
+    <div id="scrollModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-amber-50 rounded-3xl max-w-lg w-full p-6 sm:p-8 border-4 border-amber-300 shadow-2xl relative transform transition-all">
+            <div class="text-center mb-4">
+                📜 <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">Gulungan Kertas Materi</span>
+                <h3 id="scrollTitle" class="text-lg font-bold text-slate-900 mt-1">Judul Titik</h3>
+            </div>
+            <div id="scrollBody" class="text-xs text-slate-700 leading-relaxed space-y-2 bg-white/80 p-4 rounded-2xl border border-amber-200 mb-4">
+                <!-- Konten dinamis -->
+            </div>
+            <div class="space-y-3">
+                <div id="scrollQuizBox" class="bg-white p-3 rounded-2xl border border-amber-200">
+                    <p id="scrollQuizQuestion" class="text-xs font-bold text-slate-800 mb-2">Mini-Kuis Pertanyaan?</p>
+                    <div class="flex space-x-2">
+                        <input type="text" id="scrollQuizAns" placeholder="Jawaban singkat..." class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 outline-none">
+                        <button onclick="verifyScrollQuiz()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs px-4 py-2 rounded-xl font-semibold">Jawab</button>
+                    </div>
+                </div>
+                <button onclick="closeScrollModal()" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2.5 rounded-xl transition">Tutup Gulungan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop-up Kelulusan / Perayaan -->
+    <div id="congratsModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center shadow-2xl border-4 border-warmOrange/30">
+            <div class="text-5xl mb-4 animate-bounce">🎉</div>
+            <h3 class="text-2xl font-bold text-slate-900">Luar Biasa, <span id="congratsName">Siswa</span>!</h3>
+            <p class="text-xs text-slate-600 mt-2 leading-relaxed">Kamu telah berhasil menyelesaikan seluruh rangkaian pembelajaran topik **Ruang Publik Virtual** dengan sangat baik!</p>
+            <button onclick="closeCongratsModal()" class="mt-6 w-full bg-warmOrange hover:bg-orange-600 text-white font-semibold py-3 rounded-xl shadow-lg shadow-orange-500/30 transition">
+                🌟 Kembali ke Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- Dashboard Guru (Admin Modal) -->
+    <div id="adminModal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-4">
+                <h3 class="text-lg font-bold text-slate-900">🔒 Dashboard Guru (Rekapitulasi Data Siswa)</h3>
+                <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700 font-bold text-lg">✕</button>
+            </div>
+            
+            <div id="adminLoginBox" class="space-y-4 py-8 max-w-sm mx-auto text-center">
+                <p class="text-xs text-slate-600">Masukkan Passcode Guru untuk mengakses data rekapitulasi (Passcode default: <code class="bg-slate-100 px-2 py-1 rounded text-digitalBlue font-bold">guru123</code>)</p>
+                <input type="password" id="adminPassInput" placeholder="Passcode..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm text-center outline-none">
+                <button onclick="verifyAdminPass()" class="w-full bg-digitalBlue text-white text-xs font-semibold py-3 rounded-xl">Masuk Admin</button>
+            </div>
+
+            <div id="adminContentBox" class="hidden space-y-4">
+                <div class="flex justify-between items-center">
+                    <p class="text-xs text-slate-500">Data tersimpan secara lokal melalui <code class="bg-slate-100 px-1.5 py-0.5 rounded">localStorage</code>.</p>
+                    <button onclick="exportAdminData()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-xl">📥 Export Data (JSON)</button>
+                </div>
+                <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-100 text-slate-700 uppercase">
+                            <tr>
+                                <th class="p-3">Nama</th>
+                                <th class="p-3">Kelas / Kelompok</th>
+                                <th class="p-3">Presensi</th>
+                                <th class="p-3">Mood</th>
+                                <th class="p-3">Bahan Ajar</th>
+                                <th class="p-3">LKPD</th>
+                                <th class="p-3">Tugas</th>
+                                <th class="p-3">Refleksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="divide-y divide-slate-200">
+                            <!-- Diisi via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 4. JAVASCRIPT LOGIC & GAMIFICATION -->
+    <!-- ========================================== -->
+    <script>
+        // Global App State
+        let appData = {
+            nama: '',
+            kelas: '',
+            kelompok: '',
+            presensi: '',
+            mood: '',
+            pemantik: '',
+            materialSlideDone: false,
+            materialModulDone: false,
+            materialMapDone: false,
+            selectedCase: null,
+            clue1: '',
+            clue2: '',
+            clue3: '',
+            clue4: '',
+            conclusion: '',
+            lkpdSaved: false,
+            taskUrl: '',
+            taskNotes: '',
+            taskSubmitted: false,
+            ref1: '',
+            ref2: '',
+            refSlider: 80,
+            refSelect: '',
+            reflectionSubmitted: false,
+            currentMapPinUnlocked: 1,
+            completedMapPins: []
+        };
+
+        // Audio SFX helper (Web Audio API Synthesizer)
+        let soundEnabled = true;
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(440, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.15);
+                } else if (type === 'click') {
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.05);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked");
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('audioToggle').innerHTML = soundEnabled ? '🔊 <span class="hidden sm:inline">SFX: On</span>' : '🔇 <span class="hidden sm:inline">SFX: Off</span>';
+        }
+
+        // Load Persistence on Startup
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('virtualPublicSpaceData');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                    if (appData.nama) {
+                        document.getElementById('onboardingScreen').classList.add('hidden');
+                        updateUI();
+                    }
+                } catch(e) { console.error(e); }
+            }
+
+            // Onboarding Form Handler
+            document.getElementById('onboardingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                appData.nama = document.getElementById('inputNama').value.trim();
+                appData.kelas = document.getElementById('inputKelas').value.trim();
+                appData.kelompok = document.getElementById('inputKelompok').value.trim();
+                appData.presensi = document.getElementById('inputPresensi').value;
+                const moodRadio = document.querySelector('input[name="mood"]:checked');
+                appData.mood = moodRadio ? moodRadio.value : '😊 Semangat';
+                appData.pemantik = document.getElementById('inputPemantik').value.trim();
+
+                saveState();
+                playSound('success');
+                document.getElementById('onboardingScreen').classList.add('hidden');
+                updateUI();
+            });
+        });
+
+        function saveState() {
+            localStorage.setItem('virtualPublicSpaceData', JSON.stringify(appData));
+        }
+
+        // Navigation Tabs
+        function switchTab(targetId) {
+            playSound('click');
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${targetId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-digitalBlue', 'text-white', 'shadow-md');
+                if (btn.dataset.target === targetId) {
+                    btn.classList.add('bg-digitalBlue', 'text-white', 'shadow-md');
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Update UI & Dynamic Naming
+        function updateUI() {
+            // Dynamic Naming replacement
+            document.querySelectorAll('.nama-siswa-dynamic').forEach(el => {
+                el.innerText = appData.nama;
+            });
+
+            // Dashboard Greeting
+            document.getElementById('greetingName').innerText = `Halo, ${appData.nama}!`;
+            document.getElementById('greetingDetails').innerText = `Kelas: ${appData.kelas} | Kelompok: ${appData.kelompok} | Presensi: ${appData.presensi}`;
+
+            // Material Badges
+            if (appData.materialSlideDone) {
+                document.getElementById('badgeMaterialSlide').className = "text-[10px] bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-medium";
+                document.getElementById('badgeMaterialSlide').innerText = "✓ Selesai";
+            }
+            if (appData.materialModulDone) {
+                document.getElementById('badgeMaterialModul').className = "text-[10px] bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-medium";
+                document.getElementById('badgeMaterialModul').innerText = "✓ Selesai";
+            }
+            if (appData.materialMapDone) {
+                document.getElementById('badgeMaterialMap').className = "text-[10px] bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full font-medium";
+                document.getElementById('badgeMaterialMap').innerText = "✓ Selesai";
+            }
+
+            // LKPD Form Load
+            if (appData.kelompok && document.getElementById('lkpdAnggota').value === '') {
+                document.getElementById('lkpdAnggota').value = appData.kelompok;
+            }
+            if (appData.selectedCase) {
+                lockCaseUI(appData.selectedCase);
+            }
+            if (appData.lkpdSaved) {
+                document.getElementById('clue1Input').value = appData.clue1;
+                document.getElementById('clue2Input').value = appData.clue2;
+                document.getElementById('clue3Input').value = appData.clue3;
+                document.getElementById('clue4Input').value = appData.clue4;
+                document.getElementById('conclusionInput').value = appData.conclusion;
+            }
+
+            // Progress Bar TP
+            let materialFinished = (appData.materialSlideDone || appData.materialModulDone || appData.materialMapDone);
+            let tp1Done = materialFinished;
+            let tp2Done = appData.lkpdSaved;
+
+            let completedTP = (tp1Done ? 1 : 0) + (tp2Done ? 1 : 0);
+            document.getElementById('progressCount').innerText = completedTP;
+
+            if (tp1Done) {
+                document.getElementById('tp1Box').className = "flex items-start p-4 rounded-2xl border border-emerald-200 bg-emerald-50 transition";
+                document.getElementById('tp1Icon').className = "bg-emerald-500 text-white rounded-xl w-8 h-8 flex items-center justify-center font-bold text-sm mr-4 mt-0.5 flex-shrink-0";
+                document.getElementById('tp1Icon').innerText = "✓";
+            }
+            if (tp2Done) {
+                document.getElementById('tp2Box').className = "flex items-start p-4 rounded-2xl border border-emerald-200 bg-emerald-50 transition";
+                document.getElementById('tp2Icon').className = "bg-emerald-500 text-white rounded-xl w-8 h-8 flex items-center justify-center font-bold text-sm mr-4 mt-0.5 flex-shrink-0";
+                document.getElementById('tp2Icon').innerText = "✓";
+            }
+
+            if (completedTP === 2) {
+                document.getElementById('overallStatusText').innerText = "Tuntas Luar Biasa! 🌟";
+            }
+        }
+
+        // Material Modals Handler
+        let activeMaterialType = '';
+        function openMaterialModal(type) {
+            playSound('click');
+            activeMaterialType = type;
+            const title = type === 'slide' ? 'Slide Presentasi Interaktif' : 'Modul Teks Pembacaan';
+            document.getElementById('matModalTitle').innerText = title;
+            document.getElementById('materialModal').classList.remove('hidden');
+            document.getElementById('materialModal').classList.add('flex');
+        }
+        function closeMaterialModal() {
+            document.getElementById('materialModal').classList.add('hidden');
+            document.getElementById('materialModal').classList.remove('flex');
+        }
+        function finishMaterialOption() {
+            playSound('success');
+            if (activeMaterialType === 'slide') appData.materialSlideDone = true;
+            if (activeMaterialType === 'modul') appData.materialModulDone = true;
+            saveState();
+            updateUI();
+            closeMaterialModal();
+        }
+
+        // Peta Kota Digital (Pilihan 3) Handler
+        function openMapModal() {
+            playSound('click');
+            document.getElementById('mapModal').classList.remove('hidden');
+            document.getElementById('mapModal').classList.add('flex');
+            renderMapPins();
+        }
+        function closeMapModal() {
+            document.getElementById('mapModal').classList.add('hidden');
+            document.getElementById('mapModal').classList.remove('flex');
+        }
+
+        const mapDataDetails = {
+            1: { title: "1. Kenali Medannya", content: "Ruang publik virtual adalah area di dunia maya tempat masyarakat berinteraksi. Perbedaannya dengan dunia nyata: interaksi digital terjadi tanpa batasan geografis namun meninggalkan jejak digital permanen.", quizQ: "Apa nama lain dari ruang publik virtual?", quizAns: "dunia maya" },
+            2: { title: "2. Media Sosial (Alun-Alun Kota)", content: "Vibe: Ramai, dinamis, dan cepat. Aktivitas: Berbagi foto, video singkat, dan membuat status. Contoh: Instagram, TikTok, X (Twitter).", quizQ: "Sebutkan 1 contoh platform media sosial!", quizAns: "instagram" },
+            3: { title: "3. Forum Diskusi (Balai Warga)", content: "Vibe: Terstruktur berdasarkan topik spesifik. Aktivitas: Bertukar pendapat, tanya jawab mendalam. Contoh: Reddit, Discord, Quora.", quizQ: "Di platform apa diskusi kelompok terstruktur berdasarkan channel?", quizAns: "discord" },
+            4: { title: "4. Platform Berbagi Video (Bioskop Global)", content: "Vibe: Hiburan dan edukasi visual massal. Aktivitas: Menonton dan mengunggah video kreatif. Contoh: YouTube, Vimeo.", quizQ: "Apa contoh platform berbagi video terbesar saat ini?", quizAns: "youtube" },
+            5: { title: "5. Blog & Website (Perpustakaan Digital)", content: "Vibe: Informatif dan mendalam. Aktivitas: Membaca artikel, ensiklopedia, dan opini panjang. Contoh: Wikipedia, Medium.", quizQ: "Apa contoh ensiklopedia digital di ruang publik?", quizAns: "wikipedia" },
+            6: { title: "6. Platform Belajar (Kelas Tanpa Dinding)", content: "Vibe: Edukatif dan kolaboratif. Aktivitas: Mengumpulkan tugas dan berdiskusi materi sekolah. Contoh: Google Classroom, Ruangguru.", quizQ: "Platform belajar yang biasa digunakan sekolah disebut?", quizAns: "google classroom" },
+            7: { title: "7. Marketplace (Mal Tanpa Kasir)", content: "Vibe: Komersial dan transaksi. Aktivitas: Jual beli produk secara digital. Contoh: Tokopedia, Shopee.", quizQ: "Sebutkan 1 contoh marketplace di Indonesia!", quizAns: "shopee" },
+            8: { title: "8. Mode Survival (Jejak Digital & Rumus 3S)", content: "Prinsip '3S': Saring Sebelum Share. Lindungi data pribadi dan hindari ujaran kebencian di ruang publik virtual.", quizQ: "Apa kepanjangan huruf S pertama dalam prinsip 3S?", quizAns: "saring" }
+        };
+
+        let currentActivePin = 1;
+        function openScrollModal(pinNum) {
+            if (pinNum > appData.currentMapPinUnlocked) {
+                alert("Selesaikan titik sebelumnya dan jawab mini-kuis terlebih dahulu!");
+                return;
+            }
+            playSound('click');
+            currentActivePin = pinNum;
+            const data = mapDataDetails[pinNum];
+            document.getElementById('scrollTitle').innerText = data.title;
+            document.getElementById('scrollBody').innerHTML = `<p>${data.content}</p>`;
+            document.getElementById('scrollQuizQuestion').innerText = `Mini-Kuis: ${data.quizQ}`;
+            document.getElementById('scrollQuizAns').value = '';
+
+            document.getElementById('scrollModal').classList.remove('hidden');
+            document.getElementById('scrollModal').classList.add('flex');
+        }
+
+        function closeScrollModal() {
+            document.getElementById('scrollModal').classList.add('hidden');
+            document.getElementById('scrollModal').classList.remove('flex');
+        }
+
+        function verifyScrollQuiz() {
+            const ans = document.getElementById('scrollQuizAns').value.trim().toLowerCase();
+            const correctAns = mapDataDetails[currentActivePin].quizAns;
+            if (ans.includes(correctAns)) {
+                playSound('success');
+                alert("Benar! Mini-kuis berhasil diselesaikan.");
+                if (!appData.completedMapPins.includes(currentActivePin)) {
+                    appData.completedMapPins.push(currentActivePin);
+                }
+                if (currentActivePin < 8) {
+                    appData.currentMapPinUnlocked = Math.max(appData.currentMapPinUnlocked, currentActivePin + 1);
+                }
+                saveState();
+                renderMapPins();
+                closeScrollModal();
+
+                if (appData.completedMapPins.length === 8) {
+                    document.getElementById('btnFinishMap').disabled = false;
+                    document.getElementById('btnFinishMap').className = "bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-6 py-2.5 rounded-xl transition cursor-pointer";
+                }
+            } else {
+                alert("Jawaban kurang tepat. Coba perhatikan kembali isi gulungan kertas!");
+            }
+        }
+
+        function renderMapPins() {
+            for (let i = 1; i <= 8; i++) {
+                const pinEl = document.getElementById(`pin${i}`);
+                const statusEl = document.getElementById(`statusPin${i}`);
+                if (appData.completedMapPins.includes(i)) {
+                    pinEl.className = "map-pin border-2 border-emerald-500 bg-emerald-50 p-4 rounded-2xl text-center cursor-pointer hover:scale-105 transition shadow-sm";
+                    statusEl.className = "text-[10px] text-emerald-600 font-semibold mt-1 block";
+                    statusEl.innerText = "✓ Selesai";
+                } else if (i <= appData.currentMapPinUnlocked) {
+                    pinEl.className = "map-pin border-2 border-digitalBlue bg-blue-50 p-4 rounded-2xl text-center cursor-pointer hover:scale-105 transition shadow-sm";
+                    statusEl.className = "text-[10px] text-digitalBlue font-semibold mt-1 block";
+                    statusEl.innerText = "Buka Titik";
+                } else {
+                    pinEl.className = "map-pin border-2 border-slate-200 bg-slate-100 p-4 rounded-2xl text-center opacity-50 cursor-not-allowed transition";
+                    statusEl.className = "text-[10px] text-slate-500 font-semibold mt-1 block";
+                    statusEl.innerText = "Terkunci";
+                }
+            }
+            document.getElementById('mapProgressInfo').innerText = `Titik selesai: ${appData.completedMapPins.length}/8`;
+        }
+
+        function finishMapOption() {
+            playSound('success');
+            appData.materialMapDone = true;
+            saveState();
+            updateUI();
+            closeMapModal();
+        }
+
+        // LKPD Logic & Strict Sequential Clues
+        function unlockCase(caseNum) {
+            const ans1 = document.getElementById('riddle1Ans').value.trim().toLowerCase();
+            const ans2 = document.getElementById('riddle2Ans').value.trim().toLowerCase();
+
+            if (caseNum === 1 && ans1.includes('saring')) {
+                playSound('success');
+                appData.selectedCase = 1;
+                saveState();
+                lockCaseUI(1);
+            } else if (caseNum === 2 && ans2.includes('youtube')) {
+                playSound('success');
+                appData.selectedCase = 2;
+                saveState();
+                lockCaseUI(2);
+            } else {
+                alert("Jawaban riddle pengunci belum tepat!");
+            }
+        }
+
+        function lockCaseUI(caseNum) {
+            document.getElementById('caseSelectionBox').innerHTML = `
+                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
+                    <span class="text-xs font-bold text-emerald-700 uppercase">Studi Kasus ${caseNum} Terpilih & Terkunci Permanen</span>
+                    <p class="text-xs text-slate-600 mt-1">Kelompokmu fokus menganalisis Studi Kasus ${caseNum} hari ini.</p>
+                </div>
+            `;
+            document.getElementById('cluesSection').classList.remove('opacity-50', 'pointer-events-none');
+        }
+
+        function checkClueProgress(num) {
+            const val = document.getElementById(`clue${num}Input`).value.trim();
+            if (num === 1 && val.length > 3) {
+                unlockClueBox(2);
+            } else if (num === 2 && val.length > 3) {
+                unlockClueBox(3);
+            } else if (num === 3 && val.length > 3) {
+                unlockClueBox(4);
+            } else if (num === 4 && val.length > 3) {
+                unlockConclusionBox();
+            }
+        }
+
+        function unlockClueBox(nextNum) {
+            const box = document.getElementById(`boxClue${nextNum}`);
+            const input = document.getElementById(`clue${nextNum}Input`);
+            box.classList.remove('opacity-60', 'bg-slate-100');
+            box.classList.add('bg-slate-50');
+            input.disabled = false;
+            input.classList.remove('bg-slate-200');
+            input.classList.add('bg-white');
+            input.placeholder = `Tuliskan klue ${nextNum}...`;
+        }
+
+        function unlockConclusionBox() {
+            const box = document.getElementById('boxConclusion');
+            const input = document.getElementById('conclusionInput');
+            const btn = document.getElementById('btnSaveLkpd');
+            box.classList.remove('opacity-60');
+            input.disabled = false;
+            input.classList.remove('bg-slate-200');
+            input.classList.add('bg-white');
+            input.placeholder = "Tuliskan kesimpulan akhir kelompok...";
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.classList.add('cursor-pointer');
+        }
+
+        function saveLkpdData() {
+            playSound('success');
+            appData.clue1 = document.getElementById('clue1Input').value;
+            appData.clue2 = document.getElementById('clue2Input').value;
+            appData.clue3 = document.getElementById('clue3Input').value;
+            appData.clue4 = document.getElementById('clue4Input').value;
+            appData.conclusion = document.getElementById('conclusionInput').value;
+            appData.lkpdSaved = true;
+            saveState();
+            updateUI();
+            alert("LKPD berhasil disimpan!");
+        }
+
+        // Assignment Submission
+        function submitAssignment(e) {
+            e.preventDefault();
+            playSound('success');
+            appData.taskUrl = document.getElementById('inputTaskUrl').value;
+            appData.taskNotes = document.getElementById('inputTaskNotes').value;
+            appData.taskSubmitted = true;
+            saveState();
+            document.getElementById('assignmentStatus').classList.remove('hidden');
+            updateUI();
+        }
+
+        // Reflection Submission & Congrats Popup
+        function submitReflection(e) {
+            e.preventDefault();
+            appData.ref1 = document.getElementById('ref1').value;
+            appData.ref2 = document.getElementById('ref2').value;
+            appData.refSlider = document.getElementById('refSlider').value;
+            appData.refSelect = document.getElementById('refSelect').value;
+            appData.reflectionSubmitted = true;
+            saveState();
+
+            // Validation before celebration
+            if (!appData.lkpdSaved) {
+                alert("Mohon selesaikan dan simpan LKPD terlebih dahulu sebelum mengirim refleksi.");
+                switchTab('lkpd');
+                return;
+            }
+
+            playSound('success');
+            document.getElementById('congratsName').innerText = appData.nama;
+            document.getElementById('congratsModal').classList.remove('hidden');
+            document.getElementById('congratsModal').classList.add('flex');
+            updateUI();
+        }
+
+        function closeCongratsModal() {
+            document.getElementById('congratsModal').classList.add('hidden');
+            document.getElementById('congratsModal').classList.remove('flex');
+            switchTab('dashboard');
+        }
+
+        // Admin Dashboard (Passcode: guru123)
+        function openAdminModal() {
+            playSound('click');
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('adminModal').classList.add('flex');
+        }
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminModal').classList.remove('flex');
+        }
+        function verifyAdminPass() {
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === 'guru123') {
+                playSound('success');
+                document.getElementById('adminLoginBox').classList.add('hidden');
+                document.getElementById('adminContentBox').classList.remove('hidden');
+                renderAdminTable();
+            } else {
+                alert("Passcode salah! Gunakan: guru123");
+            }
+        }
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            
+            // Mengambil data siswa dari localStorage (dapat dikembangkan untuk multi-user jika diintegrasikan database)
+            const row = document.createElement('tr');
+            let matCount = (appData.materialSlideDone ? 1 : 0) + (appData.materialModulDone ? 1 : 0) + (appData.materialMapDone ? 1 : 0);
+            row.innerHTML = `
+                <td class="p-3 font-bold">${appData.nama || '-'}</td>
+                <td class="p-3">${appData.kelas || '-'} / ${appData.kelompok || '-'}</td>
+                <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">${appData.presensi || '-'}</span></td>
+                <td class="p-3">${appData.mood || '-'}</td>
+                <td class="p-3">${matCount > 0 ? '✓ Selesai (' + matCount + ')' : 'Belum'}</td>
+                <td class="p-3">${appData.lkpdSaved ? '✓ Selesai' : 'Belum'}</td>
+                <td class="p-3">${appData.taskSubmitted ? '✓ Dikirim' : 'Belum'}</td>
+                <td class="p-3">${appData.reflectionSubmitted ? '✓ Terkirim (' + appData.refSlider + '%)' : 'Belum'}</td>
+            `;
+            tbody.appendChild(row);
+        }
+        function exportAdminData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `rekap_ruang_publik_virtual_${appData.nama || 'siswa'}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+    </script>
+</body>
+</html>
